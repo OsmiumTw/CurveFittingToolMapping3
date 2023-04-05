@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CJToolbox1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/CJToolbox.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
