@@ -1,5 +1,3 @@
-package MyComponent;
-
 import com.cjToolbox.Preprocessing.DataOperate;
 import org.apache.commons.math3.fitting.GaussianCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;

@@ -1,6 +1,3 @@
-package MyComponent;
-
-
 import com.cjToolbox.Preprocessing.DataOperate;
 
 import java.util.Arrays;

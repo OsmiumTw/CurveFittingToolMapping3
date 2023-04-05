@@ -1,5 +1,3 @@
-package MyComponent;
-
 import java.util.concurrent.Callable;
 
 public class FitAllData implements Callable<double[]> {

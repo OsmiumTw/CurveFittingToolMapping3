@@ -1,5 +1,3 @@
-package MyComponent;
-
 import org.apache.commons.math3.analysis.function.Gaussian;
 import org.jfree.chart.*;
 import org.jfree.chart.panel.CrosshairOverlay;

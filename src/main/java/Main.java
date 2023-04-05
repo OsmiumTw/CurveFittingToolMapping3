@@ -1,5 +1,3 @@
-package Main;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {

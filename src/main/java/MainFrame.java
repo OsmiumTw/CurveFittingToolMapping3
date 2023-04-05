@@ -2,28 +2,21 @@
  * Created by JFormDesigner on Sat Apr 01 22:13:22 CST 2023
  */
 
-package Main;
-
-import javax.swing.event.*;
-
-import MyComponent.Fit;
-import MyComponent.FitAllData;
-import MyComponent.PlotCurve;
 import com.cjToolbox.Preprocessing.FillOutliers;
 import org.apache.commons.io.FileUtils;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.*;
-import javax.swing.*;
-import javax.swing.GroupLayout;
 
 /**
  * @author WCJ
@@ -140,7 +133,6 @@ public class MainFrame extends JFrame {
                 comboBox3.setEnabled(enable);
                 toggleButton2.setEnabled(enable);
                 button2.setEnabled(enable);
-                button4.setEnabled(enable);
                 break;
             case 1:
                 // Select fitting range
@@ -152,7 +144,6 @@ public class MainFrame extends JFrame {
                 comboBox3.setEnabled(enable);
                 button3.setEnabled(!enable);
                 button2.setEnabled(enable);
-                button4.setEnabled(enable);
                 break;
             case 2:
                 // Fit All Data
@@ -187,7 +178,7 @@ public class MainFrame extends JFrame {
         if (!Objects.isNull(dialog.getFile())) {
             try {
                 if (!dialog.getFile().toLowerCase().endsWith(".txt")) {
-                    throw new Exception("不支援的檔案格式");
+                    throw new Exception("檔案格式檢查器：只支援.txt的檔案格式");
                 }
                 plotCurve.clear();
                 AllData = FileUtils.readLines(new File(dialog.getDirectory(),dialog.getFile()), StandardCharsets.UTF_8);
@@ -198,7 +189,7 @@ public class MainFrame extends JFrame {
                 StringTokenizer tokenizer1 = new StringTokenizer(AllData.get(0),"\t");
                 StringTokenizer tokenizer2 = new StringTokenizer(AllData.get(1),"\t");
                 if (tokenizer1.countTokens() != tokenizer2.countTokens() - 2) {
-                    throw new Exception("X與Y軸長度不同");
+                    throw new Exception("數據完整性檢查器：波長(波數)長度與強度不同");
                 }
                 tokenizer2.nextToken();
                 tokenizer2.nextToken();
@@ -227,7 +218,7 @@ public class MainFrame extends JFrame {
                 double YRange = Math.round(Math.abs(YPos.stream().reduce(Math::max).orElseThrow() - YPos.stream().reduce(Math::min).orElseThrow()) * 1000.0) / 1000.0;
                 label17.setText(XRange + " x " + YRange + "um2");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,ex,"LoadFile",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,ex.getMessage(),"LoadFile",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -244,7 +235,7 @@ public class MainFrame extends JFrame {
                     intensity.add(Double.valueOf(tokenizer.nextToken()));
                 }
                 if (intensity.size() != Wavelength.length) {
-                    throw new Exception("X與Y軸長度不同");
+                    throw new Exception("數據完整性檢查器：波長(波數)長度與強度不同");
                 }
                 Intensity = RemoveOutliers(intensity.stream().mapToDouble(Double::doubleValue).toArray());
                 plotCurve.setXYData(Wavelength,Intensity);
@@ -252,7 +243,7 @@ public class MainFrame extends JFrame {
                     OnceFit();
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,ex,"ShowNextCurve",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,ex.getMessage(),"ShowNextCurve",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -389,7 +380,7 @@ public class MainFrame extends JFrame {
                     for (int i = 1; i < pointCount + 1; i++) {
                         tokenizer = new StringTokenizer(AllData.get(i),"\t");
                         if (tokenizer.countTokens() != Wavelength.length + 2) {
-                            throw new Exception("X與Y軸長度不同");
+                            throw new Exception("數據完整性檢查器：波長(波數)長度與強度不同");
                         }
                         tokenizer.nextToken();
                         tokenizer.nextToken();
@@ -487,7 +478,7 @@ public class MainFrame extends JFrame {
                         JOptionPane.showMessageDialog(this,"已完成","FitAllData",JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this,ex,"FitAllData",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this,ex.getMessage(),"FitAllData",JOptionPane.ERROR_MESSAGE);
                 } finally {
                     PanelONOFF(2,true);
                     label30.setText("數據分析");
